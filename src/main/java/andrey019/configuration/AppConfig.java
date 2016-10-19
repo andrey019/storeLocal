@@ -6,6 +6,7 @@ import andrey019.service.maintenance.ConfirmationCleanUpService;
 import andrey019.service.maintenance.MailSenderService;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +37,12 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     private void servicesInit() {
         MailSenderService.getInstance().start();
         ConfirmationCleanUpService.getInstance().start();
+    }
+
+    @Bean
+    @Qualifier("staticPath")
+    public String getStaticPath() {
+        return System.getenv("OPENSHIFT_DATA_DIR");
     }
 
     @Bean
@@ -90,6 +97,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31536000);
-        registry.addResourceHandler("/static/**").addResourceLocations("file://" + System.getenv("OPENSHIFT_DATA_DIR"));
+        registry.addResourceHandler("/static/**").addResourceLocations("file://" + getStaticPath());
     }
 }
