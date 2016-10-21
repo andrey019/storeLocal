@@ -56,7 +56,7 @@ public class MainController {
             id = RandomStringUtils.random(10, true, true);
         }
         testModel1.setProductId(id);
-        testModel1.setNumber(Long.valueOf(RandomStringUtils.random(10, false, true)));
+        testModel1.setNumber(Long.valueOf(RandomStringUtils.random(3, false, true)));
         testModel1.setText(RandomStringUtils.random(50, true, false));
         if (testModel1Repo.save(testModel1) == null) {
             System.out.println("fail");
