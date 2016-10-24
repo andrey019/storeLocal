@@ -1,10 +1,7 @@
 package andrey019.controller;
 
-import andrey019.model.json.JsonEmail;
-import andrey019.model.json.JsonProfile;
-import andrey019.service.auth.PasswordRecovery;
+
 import andrey019.service.maintenance.LogService;
-import andrey019.service.auth.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,12 +28,6 @@ public class AuthController {
     @Autowired
     private PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
 
-    @Autowired
-    private RegistrationService registrationService;
-
-    @Autowired
-    private PasswordRecovery passwordRecovery;
-
 
     @RequestMapping(value="/logout", method = RequestMethod.GET)
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
@@ -54,46 +45,6 @@ public class AuthController {
         model.addAttribute("user", getUserEmail());
         logService.accessToPage("access_denied");
         return "access_denied";
-    }
-
-    @RequestMapping(value = "/emailCheck", method = RequestMethod.POST, produces = TEXT_UTF8)
-    @ResponseBody
-    public String emailCheck(@RequestBody JsonEmail jsonEmail) {
-        logService.ajaxJson("emailCheck " + jsonEmail.getEmail());
-        return registrationService.preRegistrationCheck(jsonEmail.getEmail());
-    }
-
-    @RequestMapping(value = "/registration", method = RequestMethod.POST, produces = TEXT_UTF8)
-    @ResponseBody
-    public String registration(@RequestBody JsonProfile jsonProfile) {
-        logService.ajaxJson("registration " + jsonProfile.getEmail());
-        return registrationService.registration(jsonProfile.getEmail(), jsonProfile.getPassword(),
-                jsonProfile.getfName(), jsonProfile.getlName());
-    }
-
-    @RequestMapping(value = "/confirm", method = RequestMethod.GET)
-    public String confirmation(@RequestParam("code") String code, HttpServletRequest request) {
-        if (code == null) {
-            logService.accessToPage("confirm, code == null");
-            request.setAttribute("confirm", RESPONSE_ERROR);
-            return "main_page";
-        }
-        if (registrationService.confirmRegistration(code)) {
-            logService.accessToPage("confirm, ok");
-            request.setAttribute("confirm", RESPONSE_OK);
-            return "main_page";
-        } else {
-            logService.accessToPage("confirm, error");
-            request.setAttribute("confirm", RESPONSE_ERROR);
-            return "main_page";
-        }
-    }
-
-    @RequestMapping(value = "/passwordRecovery", method = RequestMethod.POST, produces = TEXT_UTF8)
-    @ResponseBody
-    public String passwordRecovery(@RequestBody JsonEmail jsonEmail) {
-        logService.ajaxJson("passwordRecovery " + jsonEmail.getEmail());
-        return passwordRecovery.generateNewPassword(jsonEmail.getEmail());
     }
 
     private String getUserEmail(){

@@ -2,6 +2,7 @@ package andrey019.model.dao;
 
 public enum Role {
     USER("USER"),
+    MANAGER("MANAGER"),
     DBA("DBA"),
     ADMIN("ADMIN");
 

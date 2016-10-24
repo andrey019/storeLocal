@@ -1,9 +1,6 @@
 package andrey019.model.json;
 
 
-import andrey019.model.dao.Todo;
-import andrey019.model.dao.TodoList;
-
 import java.util.Set;
 
 public class JsonSearchResult {
@@ -14,15 +11,7 @@ public class JsonSearchResult {
 
     private int todoAmount;
 
-    private Set<Todo> todos;
-
     public JsonSearchResult() {}
-
-    public JsonSearchResult(TodoList todoList) {
-        this.id = todoList.getId();
-        this.name = todoList.getName();
-        this.todoAmount = todoList.getTodoAmount();
-    }
 
     public long getId() {
         return id;
@@ -46,13 +35,5 @@ public class JsonSearchResult {
 
     public void setTodoAmount(int todoAmount) {
         this.todoAmount = todoAmount;
-    }
-
-    public Set<Todo> getTodos() {
-        return todos;
-    }
-
-    public void setTodos(Set<Todo> todos) {
-        this.todos = todos;
     }
 }

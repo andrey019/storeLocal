@@ -57,13 +57,13 @@
     </c:if>
     <c:if test="${requestScope['socialSignUp'] == 'error'}">
         <div class="alert alert-danger" role="alert">
-            <p>Registration error! Couldn't get your email from social provider</p>
+            <p>Registration error! Couldn't get your username from social provider</p>
         </div>
     </c:if>
     <form method="post" action="/">
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
-            <input id="emailInput" name="email" type="email" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
+            <input id="emailInput" name="username" type="username" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
         </div>
         <p></p>
         <div class="input-group">
@@ -110,7 +110,7 @@
         <p class="modal-header modalHeader">Registration form</p>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
-            <input id="regEmailInput" onblur="emailCheck()" onkeyup="onRegistrationEnter(event)" type="email" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
+            <input id="regEmailInput" onblur="emailCheck()" onkeyup="onRegistrationEnter(event)" type="username" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
         </div>
         <div hidden id="regEmailError" class="alert alert-danger" role="alert">
             <p id="regEmailErrorText"></p>
@@ -153,7 +153,7 @@
         <br><br>
         <div hidden id="regSuccess" class="alert alert-success" role="alert">
             <p>Your form is accepted!<br>
-                Please, check your email to complete registration.<br>
+                Please, check your username to complete registration.<br>
                 Note that the letter may be sent in a couple of minutes</p>
         </div>
         <div hidden id="regError" class="alert alert-danger" role="alert">
@@ -170,14 +170,14 @@
         <p class="modal-header modalHeader">Password recovery</p>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
-            <input id="recEmailInput" type="email" onkeyup="onRecoveryEnter(event)" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
+            <input id="recEmailInput" type="username" onkeyup="onRecoveryEnter(event)" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
         </div>
         <br><br>
         <button id="recButton" type="button" onclick="passwordRecovery()" class="btn btn-primary width100">Recover</button>
         <br><br>
         <div hidden id="recSuccess" class="alert alert-success" role="alert">
             <p>Recovery successful!<br>
-                Please, check your email to get new password.<br>
+                Please, check your username to get new password.<br>
                 Note that the letter may be sent in a couple of minutes</p>
         </div>
         <div hidden id="recError" class="alert alert-danger" role="alert">

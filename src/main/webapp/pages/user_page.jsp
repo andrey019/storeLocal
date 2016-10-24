@@ -116,7 +116,7 @@
         <p>Leave fields that you don't want to change empty</p>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
-            <input id="proEmailInput" type="email" class="form-control" aria-describedby="basic-addon1" disabled>
+            <input id="proEmailInput" type="username" class="form-control" aria-describedby="basic-addon1" disabled>
         </div>
         <br>
         <div class="input-group">
@@ -150,7 +150,7 @@
         <br><br>
         <div hidden id="proSuccess" class="alert alert-success" role="alert">
             <p>Your info is updated!<br>
-                New credentials would be sent to your email.<br>
+                New credentials would be sent to your username.<br>
                 Note that the letter may be sent in a couple of minutes</p>
         </div>
         <div hidden id="proError" class="alert alert-danger" role="alert">
@@ -191,7 +191,7 @@
         <p id="shareTodoListHeader" class="modal-header modalHeader"></p>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
-            <input id="shareEmailInput" onkeyup="shareUserEnter(event)" placeholder="User email" type="email" class="form-control" aria-describedby="basic-addon1">
+            <input id="shareEmailInput" onkeyup="shareUserEnter(event)" placeholder="User username" type="username" class="form-control" aria-describedby="basic-addon1">
         </div>
         <br>
         <button id="shareButton" type="button" onclick="shareUser()" class="btn btn-success width100">Share</button>

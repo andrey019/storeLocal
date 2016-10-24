@@ -2,7 +2,6 @@ package andrey019.configuration;
 
 import andrey019.LiqPay.LiqPay;
 import andrey019.LiqPay.LiqPayApi;
-import andrey019.service.maintenance.ConfirmationCleanUpService;
 import andrey019.service.maintenance.MailSenderService;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -36,13 +36,18 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @PostConstruct
     private void servicesInit() {
         MailSenderService.getInstance().start();
-        ConfirmationCleanUpService.getInstance().start();
     }
+
+//    @Bean
+//    @Qualifier("staticPath")
+//    public String getStaticPath() {
+//        return System.getenv("OPENSHIFT_DATA_DIR");
+//    }
 
     @Bean
     @Qualifier("staticPath")
     public String getStaticPath() {
-        return System.getenv("OPENSHIFT_DATA_DIR");
+        return "e://springTemp/";
     }
 
     @Bean
@@ -57,13 +62,17 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public ConfirmationCleanUpService getConfirmationCleanUpService() {
-        return ConfirmationCleanUpService.getInstance();
-    }
-
-    @Bean
     public EmailValidator getEmailValidator() {
         return EmailValidator.getInstance();
+    }
+
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(52428800);
+        multipartResolver.setMaxUploadSizePerFile(5242880);
+        multipartResolver.setDefaultEncoding("utf-8");
+        return new CommonsMultipartResolver();
     }
 
     @Bean

@@ -1,25 +1,18 @@
 package andrey019.model.dao;
 
-import andrey019.model.json.JsonProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
 public class User {
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(unique = true, nullable = false)
-    private String email;
+    private String username;
 
-    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -29,32 +22,11 @@ public class User {
     @Column(nullable = false)
     private String lName;
 
-    @JsonIgnore
-    @OrderBy("id DESC")
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TodoList> todoLists = new HashSet<>();
-
-    @JsonIgnore
-    @OrderBy("id DESC")
-    @ManyToMany(mappedBy = "users", cascade = {CascadeType.MERGE})
-    private Set<TodoList> sharedTodoLists = new HashSet<>();
-
-    @JsonIgnore
-    @OrderBy("id DESC")
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Donation> donations = new HashSet<>();
-
-    @JsonIgnore
     @Column(nullable = false)
     private String state = State.ACTIVE.getState();
 
-    @JsonIgnore
     @Column(nullable = false)
     private String role = Role.USER.getRole();
-
-    @JsonIgnore
-    @Column(name = "sign_in_provider")
-    private String signInProvider;
 
     public long getId() {
         return id;
@@ -64,12 +36,12 @@ public class User {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -96,30 +68,6 @@ public class User {
         this.lName = lName;
     }
 
-    public Set<TodoList> getTodoLists() {
-        return todoLists;
-    }
-
-    public void setTodoLists(Set<TodoList> todoLists) {
-        this.todoLists = todoLists;
-    }
-
-    public Set<Donation> getDonations() {
-        return donations;
-    }
-
-    public void setDonations(Set<Donation> donations) {
-        this.donations = donations;
-    }
-
-    public Set<TodoList> getSharedTodoLists() {
-        return sharedTodoLists;
-    }
-
-    public void setSharedTodoLists(Set<TodoList> sharedTodoLists) {
-        this.sharedTodoLists = sharedTodoLists;
-    }
-
     public String getState() {
         return state;
     }
@@ -136,72 +84,12 @@ public class User {
         this.role = role;
     }
 
-    public String getSignInProvider() {
-        return signInProvider;
-    }
-
-    public void setSignInProvider(String signInProvider) {
-        this.signInProvider = signInProvider;
-    }
-
-    @JsonIgnore
-    public String getFullName() {
-        return fName + " " + lName;
-    }
-
-    public void setUserFromConfirmation(UserConfirmation userConfirmation) {
-        this.email = userConfirmation.getEmail();
-        this.password = userConfirmation.getPassword();
-        this.fName = userConfirmation.getfName();
-        this.lName = userConfirmation.getlName();
-    }
-
-    public void setFromJsonProfile(JsonProfile jsonProfile) {
-        if (!jsonProfile.getfName().isEmpty()) {
-            fName = jsonProfile.getfName();
-        }
-        if (!jsonProfile.getlName().isEmpty()) {
-            lName = jsonProfile.getlName();
-        }
-        if (!jsonProfile.getPassword().isEmpty()) {
-            password = jsonProfile.getPassword();
-        }
-    }
-
-    public void addTodoList(TodoList todoList) {
-        todoList.setOwner(this);
-        todoLists.add(todoList);
-    }
-
-    public void removeTodoList(TodoList todoList) {
-        todoLists.remove(todoList);
-    }
-
-    public void addDonation(Donation donation) {
-        donation.setUser(this);
-        donations.add(donation);
-    }
-
-    public void removeDonation(Donation donation) {
-        donations.remove(donation);
-    }
-
-    public void addSharedTodoList(TodoList todoList) {
-        sharedTodoLists.add(todoList);
-        todoList.getUsers().add(this);
-    }
-
-    public void removeSharedTodoList(TodoList todoList) {
-        sharedTodoLists.remove(todoList);
-        todoList.getUsers().remove(this);
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + (int) id;
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + ((username == null) ? 0 : username.hashCode());
         return result;
     }
 
@@ -216,18 +104,17 @@ public class User {
         User other = (User) obj;
         if (id != other.getId())
             return false;
-        if (email == null) {
-            if (other.getEmail() != null)
+        if (username == null) {
+            if (other.getUsername() != null)
                 return false;
-        } else if (!email.equals(other.getEmail()))
+        } else if (!username.equals(other.getUsername()))
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "User [id = " + id + ", email = " + email + ", password = " + password + ", fname = " + fName +
-                ", lname = " + lName + ", state = " + state + ", role = " + role +
-                ", signInProvider = " + signInProvider + "]";
+        return "User [id = " + id + ", username = " + username + ", password = " + password + ", fname = " + fName +
+                ", lname = " + lName + ", state = " + state + ", role = " + role + "]";
     }
 }

@@ -37,7 +37,7 @@ public class LiqPayServiceImpl implements LiqPayService {
 
     @Override
     public String generateDonation(String userEmail, double amount) {
-        User user = userRepository.findByEmail(userEmail);
+        User user = userRepository.findByUsername(userEmail);
         if (user == null) {
             return ERROR;
         }
@@ -90,7 +90,7 @@ public class LiqPayServiceImpl implements LiqPayService {
             return "no initial request\r\ndata = " + liqPayApi.base64_decode(data) +
                     "\r\nsignature = " + liqPayApi.base64_decode(signature);
         }
-        User user = userRepository.findByEmail(donationWait.getUserEmail());
+        User user = userRepository.findByUsername(donationWait.getUserEmail());
         if (user == null) {
             return "user not found: " + donationWait.getUserEmail() +
                     "\r\ndata = " + liqPayApi.base64_decode(data) +
@@ -113,7 +113,7 @@ public class LiqPayServiceImpl implements LiqPayService {
                     "\r\ndata = " + liqPayApi.base64_decode(data) +
                     "\r\nsignature = " + liqPayApi.base64_decode(signature);
         }
-        user.addDonation(donation);
+        //user.addDonation(donation);
         if (userRepository.save(user) == null) {
             return "donation save error: " + donationWait.getUserEmail() +
                     "\r\ndata = " + liqPayApi.base64_decode(data) +

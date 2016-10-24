@@ -11,8 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -81,8 +86,27 @@ public class MainController {
     }
 
     @RequestMapping("/ok")
+    @ResponseBody
     public String responseOk() {
         return "ok";
+    }
+
+    @RequestMapping(value = "/uploadPage", method = RequestMethod.GET)
+    public String getUploadPage() {
+        return "uploadPage";
+    }
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public String uploadFiles(@RequestParam("file")MultipartFile multipartFile) {
+        File file = new File(staticPath + multipartFile.getOriginalFilename());
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+            fileOutputStream.write(multipartFile.getBytes());
+            fileOutputStream.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "internal_error";
+        }
+        return "redirect:/ok";
     }
 
     private String checkAuthentication(){

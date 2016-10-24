@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import andrey019.model.dao.User;
-import andrey019.service.dao.UserService;
+import andrey019.repository.UserRepository;
 import andrey019.service.maintenance.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,20 +20,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomUserDetailsService implements UserDetailsService{
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
     private LogService logService;
 
     @Transactional(readOnly=true)
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userService.getByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             logService.signIn("User not found");
             throw new UsernameNotFoundException("Username not found");
         }
         logService.signIn(user.toString());
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 user.getState().equals("Active"), true, true, true, getGrantedAuthorities(user));
     }
 

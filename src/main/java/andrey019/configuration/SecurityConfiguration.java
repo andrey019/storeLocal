@@ -18,8 +18,6 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.social.security.SocialUserDetailsService;
-import org.springframework.social.security.SpringSocialConfigurer;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.sql.DataSource;
@@ -34,10 +32,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public CustomSuccessHandler customSuccessHandler;
-
-    @Autowired
-    @Qualifier("userSocialDetails")
-    public SocialUserDetailsService socialUserDetailsService;
 
     @Autowired
     @Qualifier("customUserDetailsService")
@@ -72,8 +66,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "favicon.ico").permitAll()
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")
-                .antMatchers("/user/**", "/payment/liqpayRequest").access("hasRole('ADMIN') or hasRole('USER')")
-                .and().apply(new SpringSocialConfigurer())
+                .antMatchers("/manager/**").access("hasRole('ADMIN') or hasRole('MANAGER')")
                 .and().formLogin().loginPage("/").successHandler(customSuccessHandler)
                 .usernameParameter("email").passwordParameter("password")
                 .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(persistentTokenRepository())
