@@ -44,8 +44,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 //        return System.getenv("OPENSHIFT_DATA_DIR");
 //    }
 
-    @Bean
-    @Qualifier("staticPath")
+    @Bean(name = "staticPath")
     public String getStaticPath() {
         return "e://springTemp/";
     }
@@ -66,7 +65,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         return EmailValidator.getInstance();
     }
 
-    @Bean(name = "multipartResolver")
+    @Bean(name = "filterMultipartResolver")
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSize(52428800);

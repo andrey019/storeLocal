@@ -3,9 +3,11 @@
 <html>
 <head>
     <title>upload</title>
+    <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="/resources/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-<form method="POST" action="/upload?${_csrf.parameterName}=${_csrf.token}" enctype="multipart/form-data">
+<form method="POST" action="/upload" enctype="multipart/form-data">
     <table>
     <tr>
     <td><label path="file">Select a file to upload</label></td>

@@ -4,6 +4,8 @@ import andrey019.model.dao.tests.TestModel1;
 import andrey019.model.json.JsonTestModel1;
 import andrey019.repository.TestModel1Repo;
 import andrey019.service.maintenance.LogService;
+import net.coobird.thumbnailator.Thumbnailator;
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 @Controller
@@ -98,10 +97,11 @@ public class MainController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String uploadFiles(@RequestParam("file")MultipartFile multipartFile) {
-        File file = new File(staticPath + multipartFile.getOriginalFilename());
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-            fileOutputStream.write(multipartFile.getBytes());
-            fileOutputStream.flush();
+        //File file = new File(staticPath + "ololo");
+        try (InputStream inputStream = new ByteArrayInputStream(multipartFile.getBytes())) {
+            Thumbnails.of(inputStream).size(200, 200).outputFormat("jpg").toFile(staticPath + "ololo");
+//            fileOutputStream.write(multipartFile.getBytes());
+//            fileOutputStream.flush();
         } catch (Exception e) {
             e.printStackTrace();
             return "internal_error";
