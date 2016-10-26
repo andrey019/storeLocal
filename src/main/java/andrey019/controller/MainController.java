@@ -1,7 +1,10 @@
 package andrey019.controller;
 
+import andrey019.model.dao.Motherboard;
+import andrey019.model.dao.Product;
 import andrey019.model.dao.tests.TestModel1;
 import andrey019.model.json.JsonTestModel1;
+import andrey019.repository.ProductRepo;
 import andrey019.repository.TestModel1Repo;
 import andrey019.service.maintenance.LogService;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -16,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -35,6 +40,9 @@ public class MainController {
 
     @Autowired
     private TestModel1Repo testModel1Repo;
+
+    @Autowired
+    private ProductRepo productRepo;
 
 
 	@RequestMapping("/")
@@ -107,6 +115,47 @@ public class MainController {
             return "internal_error";
         }
         return "redirect:/ok";
+    }
+
+    @RequestMapping("/createProduct")
+    @ResponseBody
+    public String createInherited() {
+        Product product = new Product();
+        product.setCode(111);
+        product.setText("simple product");
+        productRepo.save(product);
+        Motherboard motherboard = new Motherboard();
+        motherboard.setCode(222);
+        motherboard.setText("motherboard");
+        motherboard.setCpuSocket("1156");
+        motherboard.setMaxRAM(32);
+        productRepo.save(motherboard);
+        return "ok";
+    }
+
+    @RequestMapping(value = "/showProduct", produces = JSON_UTF8)
+    @ResponseBody
+    public Product showProduct() {
+        return productRepo.findByCode(222);
+    }
+
+    @RequestMapping(value = "/uploadProduct", method = RequestMethod.GET)
+    public String uploadProductPage() {
+        return "uploadProduct";
+    }
+
+    @RequestMapping(value = "/uploadProduct", method = RequestMethod.POST, produces = JSON_UTF8)
+    @ResponseBody
+    public HashMap<String, String> uploadProduct(@RequestBody Product product, HttpServletResponse response) {
+        System.out.println(product.getClass());
+        System.out.println(product);
+
+        response.setStatus(HttpServletResponse.SC_OK);
+        HashMap<String, String> resp = new HashMap<>();
+        resp.put("status", "success");
+        resp.put("ololo", "trololo");
+        resp.put("code", Long.toString(productRepo.save(product).getCode()));
+        return resp;
     }
 
     private String checkAuthentication(){
