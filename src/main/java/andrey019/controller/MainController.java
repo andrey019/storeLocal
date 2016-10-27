@@ -2,10 +2,12 @@ package andrey019.controller;
 
 import andrey019.model.dao.Motherboard;
 import andrey019.model.dao.Product;
+import andrey019.model.dao.User;
 import andrey019.model.dao.tests.TestModel1;
 import andrey019.model.json.JsonTestModel1;
 import andrey019.repository.ProductRepo;
 import andrey019.repository.TestModel1Repo;
+import andrey019.repository.UserRepository;
 import andrey019.service.maintenance.LogService;
 import net.coobird.thumbnailator.Thumbnailator;
 import net.coobird.thumbnailator.Thumbnails;
@@ -43,6 +45,9 @@ public class MainController {
 
     @Autowired
     private ProductRepo productRepo;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
 	@RequestMapping("/")
@@ -122,16 +127,28 @@ public class MainController {
     public String createInherited() {
         Product product = new Product();
         product.setCode(111);
-        product.setText("simple product");
+        //product.setText("simple product");
         productRepo.save(product);
         Motherboard motherboard = new Motherboard();
         motherboard.setCode(222);
-        motherboard.setText("motherboard");
+        //motherboard.setText("motherboard");
         motherboard.setCpuSocket("1156");
         motherboard.setMaxRAM(32);
         productRepo.save(motherboard);
         return "ok";
     }
+
+//    @RequestMapping("/createAdmin")
+//    @ResponseBody
+//    public String createAdmin() {
+//        User user = new User();
+//        user.setUsername("admin");
+//        user.setPassword("$2a$10$a.cK.xVYM0Yy1Ljjdah41eJyiydQROtf3ow/HTSFR98wHafsAB/.S");
+//        user.setState("Active");
+//        user.setRole("ADMIN");
+//        userRepository.save(user);
+//        return "ok";
+//    }
 
     @RequestMapping(value = "/showProduct", produces = JSON_UTF8)
     @ResponseBody

@@ -27,7 +27,7 @@ public class Motherboard extends Product {
 
     @Override
     public String toString() {
-        return "id: " + super.getId() + ", code: " + super.getCode() + ", text: " + super.getText()
-                + ", cpuSocket: " + cpuSocket + ", maxRAM: " + maxRAM;
+        return "id: " + super.getId() + ", code: " + super.getCode() +
+                ", cpuSocket: " + cpuSocket + ", maxRAM: " + maxRAM;
     }
 }

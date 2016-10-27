@@ -17,16 +17,10 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String fName;
-
-    @Column(nullable = false)
-    private String lName;
-
-    @Column(nullable = false)
     private String state = State.ACTIVE.getState();
 
     @Column(nullable = false)
-    private String role = Role.USER.getRole();
+    private String role = Role.MANAGER.getRole();
 
     public long getId() {
         return id;
@@ -50,22 +44,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getfName() {
-        return fName;
-    }
-
-    public void setfName(String fName) {
-        this.fName = fName;
-    }
-
-    public String getlName() {
-        return lName;
-    }
-
-    public void setlName(String lName) {
-        this.lName = lName;
     }
 
     public String getState() {
@@ -114,7 +92,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [id = " + id + ", username = " + username + ", password = " + password + ", fname = " + fName +
-                ", lname = " + lName + ", state = " + state + ", role = " + role + "]";
+        return "User [id = " + id + ", username = " + username + ", password = " + password +
+                ", state = " + state + ", role = " + role + "]";
     }
 }

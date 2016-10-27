@@ -44,8 +44,8 @@ public class JsonProfile {
 
     public void setFromUser(User user) {
         email = user.getUsername();
-        fName = user.getfName();
-        lName = user.getlName();
+//        fName = user.getfName();
+//        lName = user.getlName();
         password = null;
     }
 
