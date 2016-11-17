@@ -163,7 +163,7 @@ public class MainController {
 
     @RequestMapping(value = "/uploadProduct", method = RequestMethod.POST, produces = JSON_UTF8)
     @ResponseBody
-    public HashMap<String, String> uploadProduct(@RequestBody Product product, HttpServletResponse response) {
+    public Product uploadProduct(@RequestBody Product product, HttpServletResponse response) {
         System.out.println(product.getClass());
         System.out.println(product);
 
@@ -171,8 +171,8 @@ public class MainController {
         HashMap<String, String> resp = new HashMap<>();
         resp.put("status", "success");
         resp.put("ololo", "trololo");
-        resp.put("code", Long.toString(productRepo.save(product).getCode()));
-        return resp;
+        //resp.put("code", Long.toString(productRepo.save(product).getCode()));
+        return product;
     }
 
     private String checkAuthentication(){
